@@ -8,8 +8,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (!loading) {
-      console.log('data', data.getAllUsers);
-      setUsers(data.getAllUsers)
+      console.log('data', data.findAllUser);
+      setUsers(data.findAllUser)
     }
   }, [data]);
 
@@ -24,7 +24,7 @@ const App: React.FC = () => {
         </div>
       </form>
       <div>
-        {users.map((i: { username: string; }) => <h1>{i.username}</h1>)}
+        {users.map((i: { name: string; }) => <h1>{i.name}</h1>)}
       </div>
     </>
   )
