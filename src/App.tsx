@@ -9,6 +9,9 @@ const App: React.FC = () => {
   const [newUser] = useMutation(CREATE_USER)
   const [users, setUsers] = useState<any>([])
   const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+
   const [age, setAge] = useState<number>(0)
 
 
@@ -23,20 +26,24 @@ const App: React.FC = () => {
     newUser({
         variables: {
             input: {
-                username, age
+                username, age, password, email
             }
         }
     }).then(({data}) => {
         console.log(data)
-        setUsername('')
-        setAge(0)
+        setUsername('');
+        setAge(0);
+        setEmail('');
+        setPassword('');
     })
 }
 
   return (
     <>
       <form action="">
-        <input type="text" value ={username} onChange={e => setUsername(e.target.value)}/>
+        <input type="text" value ={username} placeholder='username' onChange={e => setUsername(e.target.value)}/>
+        <input type="text" value ={password} placeholder='password' onChange={e => setPassword(e.target.value)}/> 
+        <input type="text" value ={email} placeholder='email' onChange={e => setEmail(e.target.value)}/> 
         <input type="number" value ={age} onChange={e => setAge(+e.target.value)}/>
 
         <div>
