@@ -1,11 +1,9 @@
-import { gql } from '@apollo/client';
+import {gql} from '@apollo/client'
 
-const CREATE_USER = gql`
+export const CREATE_USER = gql`
   mutation createUser($input: UserInput) {
       createUser(input: $input) {
-        id, username, password,age
+          id, username, age
       }
   }
 `
-
-export { CREATE_USER };

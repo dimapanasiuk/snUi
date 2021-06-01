@@ -5,11 +5,11 @@ import { CREATE_USER } from './mutations';
 
 const App: React.FC = () => {
   const { data, loading, error } = useQuery(GET_ALL_USERS);
-  const [newUser] = useMutation(CREATE_USER);
-  const [users, setUsers] = useState<any>([]);
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [age, setAge] = useState<number>(0);
+
+  const [newUser] = useMutation(CREATE_USER)
+  const [users, setUsers] = useState<any>([])
+  const [username, setUsername] = useState<string>('')
+  const [age, setAge] = useState<number>(0)
 
 
   useEffect(() => {
@@ -19,20 +19,24 @@ const App: React.FC = () => {
   }, [data]);
 
   const addUser = (e: any) => {
-    e.preventDefault();
-    
+    e.preventDefault()
     newUser({
-      variables: {username: "test2", age: 12, password: "1234"}
+        variables: {
+            input: {
+                username, age
+            }
+        }
     }).then(({data}) => {
-      console.log('promise',data)
+        console.log(data)
+        setUsername('')
+        setAge(0)
     })
-  };
+}
 
   return (
     <>
       <form action="">
         <input type="text" value ={username} onChange={e => setUsername(e.target.value)}/>
-        <input type="text" value ={password} onChange={e => setPassword(e.target.value)}/>
         <input type="number" value ={age} onChange={e => setAge(+e.target.value)}/>
 
         <div>
