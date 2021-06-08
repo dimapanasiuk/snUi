@@ -2,11 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
 
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_ALL_USERS } from '../../query/user';
+import { GET_ALL_USERS, GET_ONE_USER, GET_LOGIN_INFO } from '../../query/user';
 import { CREATE_USER } from '../../mutations';
 
 const RegistrationModal = () => {
     const { data, loading, error } = useQuery(GET_ALL_USERS);
+    const {data:oneUser, loading: loadingOneUser} = useQuery(GET_ONE_USER, {
+      variables: {
+          id: 1
+      }
+    });
+
+    const {data:loginUser, loading: loadingUser} = useQuery(GET_LOGIN_INFO, {
+      variables: {
+        input: {
+          username: "Masonovv"      }
+      }
+    });
 
     const [newUser] = useMutation(CREATE_USER)
     const [users, setUsers] = useState<any>([])
@@ -15,8 +27,7 @@ const RegistrationModal = () => {
     const [email, setEmail] = useState<string>('')
   
     const [age, setAge] = useState<number>(0)
-  
-  
+
     useEffect(() => {
       if (!loading) {
         // setUsers(data.findAllUser)
