@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
+import { connect } from "react-redux";
 
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_USERS, GET_ONE_USER } from '../../query/user';
 import { CREATE_USER } from '../../mutations';
 
-const RegistrationModal = () => {
+import {loginAc} from "../../redux/actions/loginActions";
+
+const RegistrationModal = ({loginData,loginAc}: any) => {
     const { data, loading, error } = useQuery(GET_ALL_USERS);
     const {data: oneUser, loading: loadingOneUser} = useQuery(GET_ONE_USER, {
       variables: {
           id: 1
       }
     });
-
-    console.log(oneUser);
 
     const [newUser] = useMutation(CREATE_USER)
     const [users, setUsers] = useState<any>([])
@@ -25,7 +26,7 @@ const RegistrationModal = () => {
 
     useEffect(() => {
       if (!loading) {
-        setUsers(data.findAllUser)
+        // setUsers(data.findAllUser)
       }
     }, [data]);
   
@@ -38,11 +39,13 @@ const RegistrationModal = () => {
               }
           }
       }).then(({data}) => {
-          console.log(data)
-          setUsername('');
-          setAge(0);
-          setEmail('');
-          setPassword('');
+        const {username, password, email} = data?.createUser;
+        loginAc({username,password,email});
+
+        setUsername('');
+        setAge(0);
+        setEmail('');
+        setPassword('');
       })
   }
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -74,7 +77,6 @@ const RegistrationModal = () => {
 
         <div>
           <button onClick={e=> addUser(e)}>Create</button>
-          <button>Get Users</button>
         </div>
       </form>
       <div>
@@ -85,4 +87,10 @@ const RegistrationModal = () => {
   );
 };
 
-export default RegistrationModal;
+const mapStateToProps = (state: any) => ({
+ loginData: state.login,
+});
+
+const mapDispatchToProps = { loginAc };
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationModal);
