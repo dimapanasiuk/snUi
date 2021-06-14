@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
-import { connect } from "react-redux";
-
+import { connect, useDispatch  } from "react-redux"; 
 import { useQuery } from '@apollo/client';
 import { GET_LOGIN_INFO } from '../../query/user';
 import {loginAc} from "../../redux/actions/loginActions";
+import { LOGIN_AC } from "../../redux/constants/counterConstants";
 
 const LoginModal = ({loginData}: any) => {
   const [username, setUsername] = useState<string>(loginData?.username);
@@ -14,6 +14,7 @@ const LoginModal = ({loginData}: any) => {
     username: "",
     password: ""});
 
+    const dispatch = useDispatch();
 
   const isLogin = !!(loginData?.username && loginData?.password || dataLogin?.username && dataLogin?.password);
 
@@ -34,8 +35,9 @@ const LoginModal = ({loginData}: any) => {
   
   const loginHandler = (e: any) => {
     e.preventDefault();
-    setDataLogin({username, password, email: ''});
-    loginAc({username,password});
+    const data = {username, password, email: ''};
+    setDataLogin(data);
+    dispatch({type: LOGIN_AC, data});
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);

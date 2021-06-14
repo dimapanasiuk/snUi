@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
-import { connect } from "react-redux";
+import { connect,useDispatch } from "react-redux";
+import { LOGIN_AC } from "../../redux/constants/counterConstants";
 
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_ALL_USERS, GET_ONE_USER } from '../../query/user';
+import { GET_ALL_USERS } from '../../query/user';
 import { CREATE_USER } from '../../mutations';
-
-import {loginAc} from "../../redux/actions/loginActions";
 
 const RegistrationModal = ({loginData,loginAc}: any) => {
     const { data, loading, error } = useQuery(GET_ALL_USERS);
-    const {data: oneUser, loading: loadingOneUser} = useQuery(GET_ONE_USER, {
-      variables: {
-          id: 1
-      }
-    });
+
+    const dispatch = useDispatch();
 
     const [newUser] = useMutation(CREATE_USER)
     const [users, setUsers] = useState<any>([])
@@ -40,7 +36,8 @@ const RegistrationModal = ({loginData,loginAc}: any) => {
           }
       }).then(({data}) => {
         const {username, password, email} = data?.createUser;
-        loginAc({username,password,email});
+        
+        dispatch({type: LOGIN_AC, data: {username,password,email}});
         setUsername('');
         setAge(0);
         setEmail('');
@@ -90,6 +87,4 @@ const mapStateToProps = (state: any) => ({
  loginData: state.login,
 });
 
-const mapDispatchToProps = { loginAc };
-
-export default connect(mapStateToProps, mapDispatchToProps)(RegistrationModal);
+export default connect(mapStateToProps)(RegistrationModal);
