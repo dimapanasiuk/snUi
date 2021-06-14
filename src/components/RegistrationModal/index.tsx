@@ -41,7 +41,6 @@ const RegistrationModal = ({loginData,loginAc}: any) => {
       }).then(({data}) => {
         const {username, password, email} = data?.createUser;
         loginAc({username,password,email});
-
         setUsername('');
         setAge(0);
         setEmail('');

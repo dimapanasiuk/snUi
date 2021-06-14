@@ -1,31 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
+import { connect } from "react-redux";
 
 import { useQuery } from '@apollo/client';
 import { GET_LOGIN_INFO } from '../../query/user';
+import {loginAc} from "../../redux/actions/loginActions";
 
-const LoginModal = () => {
-    const {data, loading} = useQuery(GET_LOGIN_INFO, {
-      variables: {
-        input: {
-          username: "test",
-          password: "test"
-        }
+const LoginModal = ({loginData}: any) => {
+  const [username, setUsername] = useState<string>(loginData?.username);
+  const [password, setPassword] = useState<string>(loginData?.password);
+
+  const [dataLogin, setDataLogin  ] =useState<any>({
+    username: "",
+    password: ""});
+
+
+  const isLogin = !!(loginData?.username && loginData?.password || dataLogin?.username && dataLogin?.password);
+
+  const {data, loading} = useQuery(GET_LOGIN_INFO, {
+    variables: {
+      input: {
+        username: dataLogin?.username,
+        password: dataLogin?.password
       }
-    });
+    }
+  });
 
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  
   useEffect(() => {
     if (!loading) {
-      console.log(data);
+      // console.log(data);
     }
   }, [data]);
   
   const loginHandler = (e: any) => {
-    e.preventDefault()
-    console.log('test');
+    e.preventDefault();
+    setDataLogin({username, password, email: ''});
+    loginAc({username,password});
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -45,7 +55,7 @@ const LoginModal = () => {
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        Login
+        {isLogin ? (loginData?.username || username) : 'login'}
       </Button>
 
       <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
@@ -62,4 +72,12 @@ const LoginModal = () => {
   );
 };
 
-export default LoginModal;
+const mapStateToProps = (state: any) => {
+  return  {
+  loginData: state.login,
+ }
+};
+ 
+ const mapDispatchToProps = { loginAc };
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);
