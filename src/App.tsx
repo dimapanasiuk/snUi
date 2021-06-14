@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import { GET_ALL_USERS } from './query/user';
-import { CREATE_USER } from './mutations';
+import React from 'react';
 import Layout from './components/Layout';
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import Counter from './components/Counter';
 
 const App: React.FC = () => {
   return (
-    <>
-      < Layout />
-    </>
+    <Provider store={store}>
+      <Layout />
+      <Counter />
+    </Provider>
   )
 }
 
