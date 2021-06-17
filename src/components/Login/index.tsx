@@ -11,6 +11,7 @@ const LoginModal = ({loginData}: any) => {
   const [password, setPassword] = useState<string>(loginData?.password);
 
   const [dataLogin, setDataLogin  ] =useState<any>({
+    id: "",
     username: "",
     password: ""});
 
@@ -21,8 +22,10 @@ const LoginModal = ({loginData}: any) => {
   const {data, loading} = useQuery(GET_LOGIN_INFO, {
     variables: {
       input: {
-        username: dataLogin?.username,
-        password: dataLogin?.password
+        // username: dataLogin?.username,
+        // password: dataLogin?.password
+        username: 'test',
+        password: 'test',
       }
     }
   });

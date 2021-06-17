@@ -8,42 +8,41 @@ import { GET_ALL_USERS } from '../../query/user';
 import { CREATE_USER } from '../../mutations';
 
 const RegistrationModal = ({loginData,loginAc}: any) => {
-    const { data, loading, error } = useQuery(GET_ALL_USERS);
+  const { data, loading, error } = useQuery(GET_ALL_USERS);
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const [newUser] = useMutation(CREATE_USER)
-    const [users, setUsers] = useState<any>([])
-    const [username, setUsername] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-  
-    const [age, setAge] = useState<number>(0)
+  const [newUser] = useMutation(CREATE_USER)
+  const [users, setUsers] = useState<any>([])
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [age, setAge] = useState<number>(0)
 
-    useEffect(() => {
-      if (!loading) {
-        // setUsers(data.findAllUser)
-      }
-    }, [data]);
-  
-    const addUser = (e: any) => {
-      e.preventDefault()
-      newUser({
-          variables: {
-              input: {
-                  username, age, password, email
-              }
-          }
-      }).then(({data}) => {
-        const {username, password, email} = data?.createUser;
-        
-        dispatch({type: LOGIN_AC, data: {username,password,email}});
-        setUsername('');
-        setAge(0);
-        setEmail('');
-        setPassword('');
-      })
+  useEffect(() => {
+    if (!loading) {
+      // setUsers(data.findAllUser)
+    }
+  }, [data]);
+
+  const addUser = (e: any) => {
+    e.preventDefault()
+    newUser({
+        variables: {
+            input: {
+                id: Date.now(), username, age, password, email
+            }
+        }
+    }).then(({data}) => {
+      const {id, username, password, email} = data?.createUser;
+      dispatch({type: LOGIN_AC, data: {id, username, password, email}});
+      setUsername('');
+      setAge(0);
+      setEmail('');
+      setPassword('');
+    })
   }
+
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {

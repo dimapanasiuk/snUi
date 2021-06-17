@@ -6,24 +6,38 @@ import { connect } from "react-redux";
 
 import Header from '../Header';
 import CreateTodo from '../Todo';
-import { GET_ONE_USER } from '../../query/user';
+import { GET_LOGIN_INFO } from '../../query/user';
+// import { GET_ONE_USER } from '../../query/user';
 const { Content } = Layout;
 
 const MainLayout = ({loginData}: any) => {
 
-  const {data, loading} = useQuery(GET_ONE_USER, {
+console.log({loginData});
+  // const {data, loading} = useQuery(GET_ONE_USER, {
+  //   variables: {
+  //     id: 1
+  //   }
+  // });
+
+  const {data, loading} = useQuery(GET_LOGIN_INFO, {
     variables: {
-      id: 1
+      input: {
+        username: loginData?.username,
+        password: loginData?.password,
+      }
     }
   });
+  
+  const arr : Array<any> = [];
 
   const [userData , setUserData] = useState<any>({});
 
   useEffect(() => {
-    if(data?.getUser) {
-      setUserData(data.getUser);
+    if(data?.getLoginData) {
+      setUserData(data.getLoginData);
     }
   }, [data]);
+
   return (
     <Layout>
         <Header />
@@ -38,7 +52,7 @@ const MainLayout = ({loginData}: any) => {
           }}
         >
           <h1>{userData?.username}</h1>
-          <CreateTodo />
+          <CreateTodo todos={arr}/>
         </Content>
       </Layout>
     </Layout>
