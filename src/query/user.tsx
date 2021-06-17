@@ -19,7 +19,7 @@ const GET_ONE_USER = gql`
 const GET_LOGIN_INFO = gql`
   query getLoginData($input: LoginData){
     getLoginData(input: $input) {
-     id, username, password
+     id, username, password, todos {id title}
     }
   }    
 `;

@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import 'antd/dist/antd.css';
 import { useQuery } from '@apollo/client';
@@ -10,16 +10,14 @@ import { GET_LOGIN_INFO } from '../../query/user';
 // import { GET_ONE_USER } from '../../query/user';
 const { Content } = Layout;
 
-const MainLayout = ({loginData}: any) => {
-
-console.log({loginData});
+const MainLayout = ({ loginData }: any) => {
   // const {data, loading} = useQuery(GET_ONE_USER, {
   //   variables: {
   //     id: 1
   //   }
   // });
 
-  const {data, loading} = useQuery(GET_LOGIN_INFO, {
+  const { data, loading } = useQuery(GET_LOGIN_INFO, {
     variables: {
       input: {
         username: loginData?.username,
@@ -27,41 +25,41 @@ console.log({loginData});
       }
     }
   });
-  
-  const arr : Array<any> = [];
 
-  const [userData , setUserData] = useState<any>({});
+  const [userData, setUserData] = useState<any>({});
 
   useEffect(() => {
-    if(data?.getLoginData) {
+    if (data?.getLoginData) {
       setUserData(data.getLoginData);
     }
   }, [data]);
 
   return (
     <Layout>
-        <Header />
-    <Layout>
-      <Layout style={{ padding: '0 24px 24px' }}>
-        <Content
-          className="site-layout-background"
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-          }}
-        >
-          <h1>{userData?.username}</h1>
-          <CreateTodo todos={arr}/>
-        </Content>
+      <Header />
+      <Layout>
+        <Layout style={{ padding: '0 24px 24px' }}>
+          {!data?.getLoginData?.username && <h1>please login in app</h1>}
+          {data?.getLoginData?.username && <Content
+            className="site-layout-background"
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+            }}
+          >
+            <h1>{userData?.username}</h1>
+            <CreateTodo userData={userData} />
+          </Content>}
+
+        </Layout>
       </Layout>
     </Layout>
-  </Layout>
-    )
+  )
 }
 
 const mapStateToProps = (state: any) => ({
   loginData: state.login,
- });
+});
 
 export default connect(mapStateToProps)(MainLayout);

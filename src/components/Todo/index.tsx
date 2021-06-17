@@ -1,38 +1,41 @@
-import { Input, } from 'antd';
-import { ADD_TODO } from '../../mutations';
+import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
+import { size } from 'lodash';
+import { ADD_TODO } from '../../mutations';
+import CreateComponent from './components/Create';
 
-const { Search } = Input;
+const CreateTodo = ({ userData }: any) => {
 
-const CreateTodo = ({ todos }: any) => {
-  // const onSearch = (value: any) => console.log(value);
   const [newTodo] = useMutation(ADD_TODO);
+  const [todos, setTodos] = useState<any>([]);
 
-  const onSearch = () => {
+  useEffect(() => {
+    setTodos(userData?.todos);
+  }, [userData]);
+
+  const onSearch = (data: any) => {
+    const { title, text } = data; //TODO: add text to mutation
+    const { username, todos } = userData;
+
+    const a = todos.map((todo: any) => ({ id: todo?.id, title: todo?.title }))
+
     newTodo({
       variables: {
         input: {
-          username: "tester", todos: [{ id: 1, title: "test1" }, { id: 1, title: "test2" }],
+          username, todos: [...a, { id: Date.now(), title }],
         }
       }
     }).then(({ data }: any) => {
-      console.log('createUser', data);
+      setTodos(data?.addNewTodo?.todos)
     })
   }
 
   return (
     <>
-      <Search
-        placeholder="input search text"
-        allowClear
-        enterButton="Add"
-        size="large"
-        onSearch={onSearch}
-      />
-
-      {todos.map((t: any) => <h1>{t}</h1>)}
+      <CreateComponent onSubmitForm={onSearch} />
+      {size(todos) && todos.map((item: any) => <h1>{item?.title}</h1>)}
     </>
-  )
+  );
 };
 
 export default CreateTodo;
