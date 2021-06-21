@@ -3,7 +3,7 @@ import { Modal, Button } from 'antd';
 import { useDispatch } from "react-redux";
 import { useQuery } from '@apollo/client';
 import { GET_LOGIN_INFO } from '../../query/user';
-import { LOGIN_AC } from "../../redux/constants/counterConstants";
+import { LOGIN_AC } from "../../redux/constants";
 
 const LoginModal = () => {
   const [username, setUsername] = useState<string>('');

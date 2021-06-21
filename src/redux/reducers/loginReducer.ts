@@ -1,4 +1,4 @@
-import {LOGIN_AC} from "../constants/counterConstants";
+import {LOGIN_AC} from "../constants";
   
   const initialState = { username: '', password: '', email: '', todo: []  };
   

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
 import { connect,useDispatch } from "react-redux";
-import { LOGIN_AC } from "../../redux/constants/counterConstants";
+import { LOGIN_AC } from "../../redux/constants";
 
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '../../query/user';
