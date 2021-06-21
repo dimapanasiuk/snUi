@@ -3,9 +3,9 @@ import { useMutation } from '@apollo/client';
 import { size } from 'lodash';
 import { ADD_TODO } from '../../mutations';
 import CreateComponent from './components/Create';
+import { ISearch, IUserdata, fetchResultType } from './types';
 
-const CreateTodo = ({ userData }: any) => {
-
+const CreateTodo = ({ userData }: IUserdata | any) => {
   const [newTodo] = useMutation(ADD_TODO);
   const [todos, setTodos] = useState<any>([]);
 
@@ -13,7 +13,7 @@ const CreateTodo = ({ userData }: any) => {
     setTodos(userData?.todos);
   }, [userData]);
 
-  const onSearch = (data: any) => {
+  const onSearch = (data: ISearch) => {
     const { title, text } = data; //TODO: add text to mutation
     const { username, todos } = userData;
 
@@ -25,7 +25,7 @@ const CreateTodo = ({ userData }: any) => {
           username, todos: [...a, { id: Date.now(), title }],
         }
       }
-    }).then(({ data }: any) => {
+    }).then(({data}: fetchResultType | any) => {
       setTodos(data?.addNewTodo?.todos)
     })
   }

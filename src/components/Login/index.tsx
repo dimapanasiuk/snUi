@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'antd';
 import { useDispatch } from "react-redux";
 import { useQuery } from '@apollo/client';
@@ -12,7 +12,7 @@ const LoginModal = () => {
 
   const dispatch = useDispatch();
 
-  const { data: lolData, loading } = useQuery(GET_LOGIN_INFO, {
+  const { data: lolData, } = useQuery(GET_LOGIN_INFO, {
     variables: {
       input: {
         username, password
@@ -20,26 +20,17 @@ const LoginModal = () => {
     }
   });
 
-  const loginHandler = (e: any) => {
+  const loginHandler = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>): void => {
     e.preventDefault();
     const data = { username, password, email: '' };
-    console.log(lolData?.getLoginData);
     if (lolData?.getLoginData) {
       dispatch({ type: LOGIN_AC, data });
     }
   }
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const showModal = (): void => setIsModalVisible(true);
+  const handleOk = (): void => setIsModalVisible(false);
+  const handleCancel = (): void => setIsModalVisible(false);
 
   return (
     <>
@@ -49,11 +40,11 @@ const LoginModal = () => {
 
       <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <form action="">
-          <input type="text" value={username} placeholder='username' onChange={e => setUsername(e.target.value)} />
-          <input type="text" value={password} placeholder='password' onChange={e => setPassword(e.target.value)} />
+          <input type="text" value={username} placeholder='username' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} />
+          <input type="text" value={password} placeholder='password' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
 
           <div>
-            <button onClick={e => loginHandler(e)}>Login</button>
+            <button onClick={(e: React.MouseEvent<HTMLButtonElement> ) => loginHandler(e)}>Login</button>
           </div>
         </form>
       </Modal>
