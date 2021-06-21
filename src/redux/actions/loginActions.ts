@@ -1,5 +1,5 @@
 
-import { LOGIN_AC } from "../constants/counterConstants";
+import { LOGIN_AC } from "../constants";
   
 export const loginAc = (data: any) =>{
     return {

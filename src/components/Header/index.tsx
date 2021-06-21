@@ -3,9 +3,11 @@ import { Layout, Menu } from 'antd';
 import { connect } from "react-redux";
 import RegistrationModal from '../RegistrationModal';
 import LoginModal from '../Login';
+import {IMainLayout} from './types';
+
 const { Header, } = Layout;
 
-const MainHeader: React.FC = ({loginData} : any) => {
+const MainHeader = ({loginData} : IMainLayout) => {
   const isRender = !!(loginData?.username && loginData?.password);
 
   return (

@@ -7,17 +7,12 @@ import { connect } from "react-redux";
 import Header from '../Header';
 import CreateTodo from '../Todo';
 import { GET_LOGIN_INFO } from '../../query/user';
-// import { GET_ONE_USER } from '../../query/user';
+import { IMainLayout } from './types';
+
 const { Content } = Layout;
 
-const MainLayout = ({ loginData }: any) => {
-  // const {data, loading} = useQuery(GET_ONE_USER, {
-  //   variables: {
-  //     id: 1
-  //   }
-  // });
-
-  const { data, loading } = useQuery(GET_LOGIN_INFO, {
+const MainLayout = ({ loginData } :IMainLayout) => {
+  const { data } = useQuery(GET_LOGIN_INFO, {
     variables: {
       input: {
         username: loginData?.username,
@@ -51,7 +46,6 @@ const MainLayout = ({ loginData }: any) => {
             <h1>{userData?.username}</h1>
             <CreateTodo userData={userData} />
           </Content>}
-
         </Layout>
       </Layout>
     </Layout>
